@@ -75,3 +75,13 @@ run against a real org, **Fixed** for corrections.
   Experience Builder.
 - Documented that `with orderNumber = ...` is literal AgentScript, not an
   unfinished binding.
+
+### Verified
+- **Demo Order with a Custom Lightning Type** — card renders on
+  `enhancedWebChat` in a developer org on API 64.0, using the wrapped
+  `renderer.json` form.
+
+### Fixed
+- `verification.json` was missing a comma, which broke the site build. Added
+  `scripts/check-verification.js`, run as `prebuild`, so a malformed registry
+  fails with the offending line rather than a webpack module-parse error.

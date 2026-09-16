@@ -7,7 +7,9 @@
     "build": "docusaurus build && node scripts/generate-llms.js",
     "serve": "docusaurus serve",
     "clear": "docusaurus clear",
-    "llms": "node scripts/generate-llms.js"
+    "llms": "node scripts/generate-llms.js",
+    "prebuild": "node scripts/check-verification.js",
+    "check": "node scripts/check-verification.js"
   },
   "dependencies": {
     "@docusaurus/core": "^3.6.0",

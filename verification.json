@@ -5,13 +5,13 @@
     "exempt": true
   },
 
-"recipes/demo-order-clt": {
-  "verified": true,
-  "date": "2026-09-16",
-  "org": "developer",
-  "apiVersion": "64.0",
-  "notes": "Card renders on enhancedWebChat with the wrapped renderer.json form."
-}
+  "recipes/demo-order-clt": {
+    "verified": true,
+    "date": "2026-09-16",
+    "org": "developer",
+    "apiVersion": "64.0",
+    "notes": "Card renders on enhancedWebChat with the wrapped renderer.json form."
+  },
 
   "actions/apex-actions": {
     "verified": false
