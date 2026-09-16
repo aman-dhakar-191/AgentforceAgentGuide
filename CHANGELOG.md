@@ -57,3 +57,14 @@ run against a real org, **Fixed** for corrections.
   CLTs: a `complex_data_type_name` output reaching its renderer, with no input
   form. Marked unverified until the Apex, Lightning Type Bundle and renderer
   LWC land alongside the AgentScript.
+
+### Fixed
+- Demo order metadata: corrected a doubled `lightningTypes/lightningTypes/`
+  path, replaced a `schema.json` copied from an unrelated time-slot feature,
+  converted an `editor.json` to `renderer.json` (the type is an output), added
+  the missing `.cls-meta.xml` files, and aligned the join key to
+  `c__DemoOrderResultV2` across the AgentScript, bundle folder and LWC.
+- Added the `orderDetailsRenderer` LWC.
+- Flagged on the Custom Lightning Types page that `renderer.json` has two
+  forms in the wild. The wrapped form is org-confirmed; the unwrapped form in
+  the platform docs is not yet tested.

@@ -1,0 +1,37 @@
+<template>
+    <article class="slds-card slds-card_boundary">
+        <div class="slds-card__header slds-p-around_small">
+            <h2 class="slds-text-heading_small">Order {orderNumber}</h2>
+        </div>
+
+        <div class="slds-card__body slds-p-horizontal_small">
+            <dl class="slds-dl_horizontal">
+                <dt class="slds-dl_horizontal__label">Customer</dt>
+                <dd class="slds-dl_horizontal__detail">{customerName}</dd>
+
+                <dt class="slds-dl_horizontal__label">Status</dt>
+                <dd class="slds-dl_horizontal__detail">
+                    <lightning-badge label={status} variant={statusVariant}></lightning-badge>
+                </dd>
+
+                <dt class="slds-dl_horizontal__label">Total</dt>
+                <dd class="slds-dl_horizontal__detail">
+                    <lightning-formatted-number
+                        value={totalAmount}
+                        format-style="currency"
+                        currency-code="USD"
+                    ></lightning-formatted-number>
+                </dd>
+
+                <dt class="slds-dl_horizontal__label">Order Date</dt>
+                <dd class="slds-dl_horizontal__detail">
+                    <lightning-formatted-date-time value={orderDate}></lightning-formatted-date-time>
+                </dd>
+            </dl>
+        </div>
+
+        <template if:true={message}>
+            <div class="slds-card__footer slds-text-body_small">{message}</div>
+        </template>
+    </article>
+</template>

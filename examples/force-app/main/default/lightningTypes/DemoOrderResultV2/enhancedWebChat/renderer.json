@@ -1,8 +1,8 @@
 {
-  "editor": {
+  "renderer": {
     "componentOverrides": {
       "$": {
-        "definition": "c/timeSlotSelector"
+        "definition": "c/orderDetailsRenderer"
       }
     }
   }

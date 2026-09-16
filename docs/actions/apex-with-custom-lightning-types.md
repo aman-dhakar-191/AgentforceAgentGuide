@@ -135,6 +135,28 @@ lightningTypes/
 `caseResult/lightningDesktopGenAi/renderer.json` is the same shape, pointing
 at `c/caseResultRenderer`.
 
+:::warning Two forms of this file exist
+The shape above follows the platform documentation. A `DemoOrderResultV2`
+renderer confirmed working in an org uses an extra wrapper key naming the
+role:
+
+```json
+{
+  "renderer": {
+    "componentOverrides": {
+      "$": { "definition": "c/orderDetailsRenderer" }
+    }
+  }
+}
+```
+
+That form is the one with observed evidence behind it — see the
+[Demo Order recipe](../recipes/demo-order-clt.md), verified on
+`enhancedWebChat`. The unwrapped form above has not been run in an org. If
+your card does not render, try the wrapped form first. This page will be
+corrected once both channels are tested.
+:::
+
 Map individual schema properties onto LWC properties with
 `{!$attrs.PropertyName}` when you need finer control than a top-level
 override.

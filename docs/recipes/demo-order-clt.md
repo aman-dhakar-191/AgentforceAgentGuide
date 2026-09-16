@@ -71,19 +71,78 @@ helpfully describe the order in prose, and you cannot tell whether the
 renderer failed or the agent simply talked over it. For a production agent
 you would not need this; for a rendering test you do.
 
-## The pieces this needs in the org
+## The pieces
+
+All four are in `examples/`, and the docs import them rather than quoting them.
 
 | Component | Role |
 | --- | --- |
-| `DemoOrderAction` (Apex) | Invocable action behind `apex://DemoOrderAction` |
-| `DemoOrderResultV2` (Apex) | The data shape the Lightning type projects its schema from |
-| `DemoOrderResultV2` Lightning Type Bundle | `schema.json` pointing at the Apex class, plus `lightningDesktopGenAi/renderer.json` pointing at the LWC |
-| Renderer LWC | Targets `lightning__AgentforceOutput` with `sourceType` `c__DemoOrderResultV2` |
+| `DemoOrderAction.cls` | Invocable action behind `apex://DemoOrderAction` |
+| `DemoOrderResult.cls` | The data shape the Lightning type projects from |
+| `lightningTypes/DemoOrderResultV2/` | `schema.json` + `enhancedWebChat/renderer.json` |
+| `lwc/orderDetailsRenderer/` | Draws the card; targets `lightning__AgentforceOutput` |
 
-The Apex class behind a Lightning type has stricter requirements than a plain
-invocable class — top-level, `global`, `@AuraEnabled` fields, `@JsonAccess`.
-Those rules and why they matter are covered in
-[Apex Actions with Custom Lightning Types](../actions/apex-with-custom-lightning-types.md#apex-class-requirements--read-this-before-writing-code).
+### The Apex data shape
+
+Top-level, `global`, `@AuraEnabled` on every field, and `@JsonAccess` — the
+strict form the platform requires for a class a Lightning type projects from.
+Note that fields carry both `@AuraEnabled` (for schema projection) and
+`@InvocableVariable` (for action binding); a field used by both needs both.
+
+```apex file=../../examples/force-app/main/default/classes/DemoOrderResult.cls
+```
+
+### The action
+
+```apex file=../../examples/force-app/main/default/classes/DemoOrderAction.cls
+```
+
+Unlike the class a Lightning type projects from, the request and response
+wrappers here are plain inner classes — they are action binding shapes, not
+projected types, so the stricter rules do not apply to them.
+
+### The Lightning Type Bundle
+
+The schema declares no properties. For an Apex-based type the structure
+projects from the class, so the only job here is naming it:
+
+```json file=../../examples/force-app/main/default/lightningTypes/DemoOrderResultV2/schema.json
+```
+
+The renderer override points at the LWC. Note the `renderer` wrapper key —
+this is the form confirmed working in an org, and it differs from the
+unwrapped shape shown in the platform documentation:
+
+```json file=../../examples/force-app/main/default/lightningTypes/DemoOrderResultV2/enhancedWebChat/renderer.json
+```
+
+`enhancedWebChat` is the channel for an Agentforce Service agent via Enhanced
+Chat v2. An Employee agent in Lightning Experience would need the same file
+under `lightningDesktopGenAi`.
+
+### The renderer LWC
+
+Matched to the type by `sourceType`, which must equal the AgentScript's
+`complex_data_type_name` exactly:
+
+```xml file=../../examples/force-app/main/default/lwc/orderDetailsRenderer/orderDetailsRenderer.js-meta.xml
+```
+
+```js file=../../examples/force-app/main/default/lwc/orderDetailsRenderer/orderDetailsRenderer.js
+```
+
+### The join key, in all three places
+
+This is what breaks most often, and it breaks silently:
+
+| Where | Value |
+| --- | --- |
+| AgentScript `complex_data_type_name` | `c__DemoOrderResultV2` |
+| Lightning Type Bundle folder | `DemoOrderResultV2` |
+| LWC `sourceType` | `c__DemoOrderResultV2` |
+
+Mismatch any one of them and you get the default text output with no error
+anywhere.
 
 ## Testing it
 
