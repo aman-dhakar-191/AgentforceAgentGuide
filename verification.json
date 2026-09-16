@@ -5,6 +5,11 @@
     "exempt": true
   },
 
+  "recipes/demo-order-clt": {
+    "verified": false,
+    "notes": "AgentScript is in the repo; the Apex, Lightning Type Bundle and renderer LWC are still being added. Not runnable end to end yet."
+  },
+
   "actions/apex-actions": {
     "verified": false
   },

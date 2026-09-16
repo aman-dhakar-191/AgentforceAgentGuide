@@ -51,3 +51,9 @@ run against a real org, **Fixed** for corrections.
 ### Added
 - `CONTRIBUTING.md` — the loop for testing samples in an org and recording
   the result.
+
+### Added
+- **Demo Order with a Custom Lightning Type** recipe — the output-only half of
+  CLTs: a `complex_data_type_name` output reaching its renderer, with no input
+  form. Marked unverified until the Apex, Lightning Type Bundle and renderer
+  LWC land alongside the AgentScript.
