@@ -3,42 +3,73 @@
 A practical guide to building Agentforce agents — with AgentScript, Apex,
 Custom Lightning Types, and the Salesforce CLI.
 
-Every code sample here is intended to be **run against a real org before it
-is marked verified**. Each page carries front-matter recording its
-verification state:
+Published to GitHub Pages from `main`.
 
-```yaml
-verified: true
-verified_on: 2026-09-20
-org_type: scratch          # scratch | developer | namespaced
-api_version: "64.0"
+## How correctness is handled
+
+**Samples are not copy-pasted.** Every code block in the guide is imported at
+build time from the SFDX project in [`examples/`](examples/), using
+`remark-code-import`. What you read on the site is the file that was actually
+deployed — so a fix made while testing in an org reaches the docs
+automatically, and a moved or deleted file breaks the build instead of
+silently going stale.
+
+**Every page states whether it was verified.** A page either carries a
+verification banner naming the org type and API version it was tested
+against, or it is explicitly marked unverified. Nothing is presented as
+tested until it has been run.
+
+**Last-modified dates come from git**, not from hand-maintained front-matter,
+so a stale page looks stale. Meaningful changes are also recorded in
+[CHANGELOG.md](CHANGELOG.md).
+
+Where official sources conflict, the guide says so in the text rather than
+silently picking one.
+
+## Repository layout
+
+```
+docs/                  the guide itself (Docusaurus docs root)
+  intro.md
+  actions/             Apex actions, Custom Lightning Types
+examples/              SFDX project — the source of every code sample
+  agent-script/        AgentScript fragments imported by the docs
+  force-app/           Apex classes, LWCs, Lightning Type Bundles
+.github/workflows/
+  deploy-docs.yml      builds and publishes to GitHub Pages on push to main
+  build-check.yml      builds on PRs; catches broken links and dead imports
 ```
 
-A page with `verified: false` has not been executed yet — treat its samples
-as derived from documentation, not proven.
+## Local development
 
-## Contents
+```bash
+npm install
+npm start          # dev server with hot reload
+npm run build      # production build — run this before pushing
+```
 
-### Actions
-- [Actions Backed by Apex](docs/actions/apex-actions.md) — invocable methods,
-  input/output binding, descriptions the agent can reason over, security and
-  governor limits.
-- [Apex Actions with Custom Lightning Types](docs/actions/apex-with-custom-lightning-types.md)
-  — replace the default input form and output card with your own LWC.
+`npm run build` is the real check: it fails on broken internal links and on
+code-import paths pointing at files that no longer exist.
+
+## Deploying the examples
+
+See [examples/README.md](examples/README.md) for scratch org setup and the
+post-deploy testing checklist — including the two things that reliably waste
+an afternoon (the Draft-mode renderer bug, and the agent-access permission
+set).
 
 ## Planned structure
 
-```
-docs/
-  concepts/        agent anatomy: topics, actions, instructions, variables, the runtime loop
-  agent-script/    authoring agents as script: syntax, action config, testing
-  actions/         action backends: Apex, CLT, prompt templates, external services
-  lightning-types/ custom types in depth: schema, channels, UI config
-  cli/             sf CLI: project setup, deploy, agent test, preview
-  recipes/         complete scenarios, each shown in script and CLI/metadata form
-  reference/       metadata shapes, limits, glossary, troubleshooting
-```
+Concepts are written once and linked to, rather than re-explained per
+authoring mode — that is what keeps the AgentScript and CLI tracks from
+doubling the size of the guide.
 
-Concepts are written once in `concepts/` and linked to, rather than
-re-explained per authoring mode — that is what keeps the script and CLI
-tracks from doubling the guide's size.
+| Section | Covers |
+| --- | --- |
+| `concepts/` | Agent anatomy: topics, actions, instructions, variables, the runtime loop |
+| `agent-script/` | Authoring agents as script: syntax, action configuration, testing |
+| `actions/` | Action backends: Apex, Custom Lightning Types, prompt templates |
+| `lightning-types/` | Custom types in depth: schema, channels, UI configuration |
+| `cli/` | `sf` CLI: project setup, deploy, agent test, preview |
+| `recipes/` | Complete scenarios, each shown in script and CLI/metadata form |
+| `reference/` | Metadata shapes, limits, glossary, troubleshooting |

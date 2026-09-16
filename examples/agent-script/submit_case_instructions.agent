@@ -1,0 +1,5 @@
+instructions:->
+   if not @variables.case_submitted:
+      | The user wants to submit a support case.
+        Call {!@actions.submit_case} action's user_input tool to collect the case details from the user.
+        Once the form is submitted, confirm the case was created and share the case number.

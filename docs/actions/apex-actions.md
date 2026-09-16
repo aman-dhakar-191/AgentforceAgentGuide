@@ -29,7 +29,7 @@ output card with your own LWC, continue to
 AgentScript action          Apex class                    Runtime
 ──────────────────          ──────────                    ───────
 target: "apex://            @InvocableMethod              1. agent decides to act
-  CaseSubmissionService"      submitCase(List<Request>)   2. inputs bound to Request
+  SimpleCaseService"          submitCase(List<Request>)   2. inputs bound to Request
                                                           3. method runs
 inputs:  name/type/desc  ─►  Request  @InvocableVariable  4. Response mapped to outputs
 outputs: name/type/desc  ◄─  Response @InvocableVariable  5. agent reads outputs
@@ -52,83 +52,12 @@ An invocable method takes a `List` of requests and returns a `List` of
 responses. The platform invokes it with a single-element list for an agent
 action, but the bulk signature is still required.
 
-```apex
-public with sharing class CaseSubmissionService {
-
-    public class SubmitCaseRequest {
-        @InvocableVariable(
-            label='Subject'
-            description='Short summary of the problem'
-            required=true
-        )
-        public String subject;
-
-        @InvocableVariable(label='Priority' description='Case priority')
-        public String priority;
-
-        @InvocableVariable(label='Description' description='Full detail')
-        public String description;
-    }
-
-    public class SubmitCaseResponse {
-        @InvocableVariable public String case_number;
-        @InvocableVariable public String status;
-    }
-
-    @InvocableMethod(
-        label='Submit Case'
-        description='Creates a support case and returns its case number'
-    )
-    public static List<SubmitCaseResponse> submitCase(List<SubmitCaseRequest> requests) {
-        List<SubmitCaseResponse> results = new List<SubmitCaseResponse>();
-
-        for (SubmitCaseRequest req : requests) {
-            Case c = new Case(
-                Subject     = req.subject,
-                Priority    = String.isBlank(req.priority) ? 'Medium' : req.priority,
-                Description = req.description,
-                Origin      = 'Agentforce'
-            );
-            insert c;
-
-            Case created = [
-                SELECT CaseNumber, Status
-                FROM Case
-                WHERE Id = :c.Id
-                LIMIT 1
-            ];
-
-            SubmitCaseResponse res = new SubmitCaseResponse();
-            res.case_number = created.CaseNumber;
-            res.status      = created.Status;
-            results.add(res);
-        }
-
-        return results;
-    }
-}
+```apex file=../../examples/force-app/main/default/classes/SimpleCaseService.cls
 ```
 
 ### The AgentScript
 
-```
-actions:
-   submit_case:
-      description: "Submits a support case and returns the new case number"
-      inputs:
-         subject: string
-            description: "Short summary of the problem"
-            is_required: True
-         priority: string
-            description: "Case priority: Low, Medium, High"
-         description: string
-            description: "Full detail of the problem"
-      outputs:
-         case_number: string
-            description: "The case number assigned to the new case"
-         status: string
-            description: "The status of the newly created case"
-      target: "apex://CaseSubmissionService"
+```yaml file=../../examples/agent-script/simple_submit_case.agent
 ```
 
 ### Wiring it into instructions
@@ -136,11 +65,7 @@ actions:
 An action that exists but is never referenced is never called. Reference it
 from a topic's instructions with `{!@actions.<name>}`:
 
-```
-instructions:->
-   | The user wants to report a problem.
-     Gather the subject, priority, and description conversationally,
-     then call {!@actions.submit_case} and tell the user their case number.
+```yaml file=../../examples/agent-script/simple_submit_case_instructions.agent
 ```
 
 ## Writing descriptions the agent can actually use

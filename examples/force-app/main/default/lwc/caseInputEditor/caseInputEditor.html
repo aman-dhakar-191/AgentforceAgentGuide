@@ -1,0 +1,26 @@
+<template>
+    <div class="slds-box slds-theme_default">
+        <lightning-input
+            name="subject"
+            label="Subject"
+            value={subject}
+            required
+            onchange={handleInputChange}
+        ></lightning-input>
+
+        <lightning-combobox
+            name="priority"
+            label="Priority"
+            value={priority}
+            options={priorityOptions}
+            onchange={handleInputChange}
+        ></lightning-combobox>
+
+        <lightning-textarea
+            name="description"
+            label="Description"
+            value={description}
+            onchange={handleInputChange}
+        ></lightning-textarea>
+    </div>
+</template>

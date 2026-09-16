@@ -100,46 +100,15 @@ type's structure updates with no JSON edit.
 
 ### 1. The Apex data shapes
 
-```apex
-@JsonAccess(serializable='always' deserializable='always')
-global class CaseInput {
-    @AuraEnabled
-    @InvocableVariable(
-        label='Subject'
-        description='Case subject'
-        required=true
-    )
-    global String subject;
-
-    @AuraEnabled
-    @InvocableVariable(label='Priority' description='Case priority')
-    global String priority;
-
-    @AuraEnabled
-    @InvocableVariable(label='Description' description='Case description')
-    global String description;
-}
+```apex file=../../examples/force-app/main/default/classes/CaseInput.cls
 ```
 
-```apex
-@JsonAccess(serializable='always' deserializable='always')
-global class CaseResult {
-    @AuraEnabled global String caseNumber;
-    @AuraEnabled global String subject;
-    @AuraEnabled global String priority;
-    @AuraEnabled global String status;
-    @AuraEnabled global Datetime createdDate;
-    @AuraEnabled global String estimatedResponse;
-}
+```apex file=../../examples/force-app/main/default/classes/CaseResult.cls
 ```
 
 The request wrapper's field names must match the AgentScript input names:
 
-```apex
-global class SubmitCaseRequest {
-    @InvocableVariable(required=true)
-    global CaseInput case_data;
-}
+```apex file=../../examples/force-app/main/default/classes/SubmitCaseRequest.cls
 ```
 
 ### 2. The Lightning Type Bundles
@@ -161,25 +130,13 @@ lightningTypes/
 
 `caseInput/schema.json` — no properties, just a pointer:
 
-```json
-{
-  "title": "Case Input",
-  "description": "Support case submission data",
-  "lightning:type": "@apexClassType/c__CaseInput"
-}
+```json file=../../examples/force-app/main/default/lightningTypes/caseInput/schema.json
 ```
 
 `caseInput/lightningDesktopGenAi/editor.json` — a top-level override, using
 `$` as the key to replace the UI for the entire type with one component:
 
-```json
-{
-  "componentOverrides": {
-    "$": {
-      "definition": "c/caseInputEditor"
-    }
-  }
-}
+```json file=../../examples/force-app/main/default/lightningTypes/caseInput/lightningDesktopGenAi/editor.json
 ```
 
 `caseResult/lightningDesktopGenAi/renderer.json` is the same shape, pointing
@@ -207,24 +164,7 @@ Apex-based types are **not supported in Experience Builder sites**.
 The editor receives a `value` property holding existing data, and dispatches
 `valuechange` when the user edits the form:
 
-```js
-handleInputChange(event) {
-    event.stopPropagation();
-    const { name, value } = event.target;
-    this[name] = value;
-
-    this.dispatchEvent(
-        new CustomEvent('valuechange', {
-            detail: {
-                value: {
-                    subject: this.subject,
-                    priority: this.priority,
-                    description: this.description
-                }
-            }
-        })
-    );
-}
+```js file=../../examples/force-app/main/default/lwc/caseInputEditor/caseInputEditor.js
 ```
 
 `event.stopPropagation()` matters — without it the inner input's own event
@@ -232,55 +172,19 @@ escapes alongside yours and the platform can see conflicting updates.
 
 Editor `js-meta.xml` — matched by `targetType`:
 
-```xml
-<targets>
-    <target>lightning__AgentforceInput</target>
-</targets>
-<targetConfigs>
-    <targetConfig targets="lightning__AgentforceInput">
-        <targetType name="c__caseInput"/>
-    </targetConfig>
-</targetConfigs>
+```xml file=../../examples/force-app/main/default/lwc/caseInputEditor/caseInputEditor.js-meta.xml
 ```
 
 Renderer `js-meta.xml` — matched by `sourceType`:
 
-```xml
-<targets>
-    <target>lightning__AgentforceOutput</target>
-</targets>
-<targetConfigs>
-    <targetConfig targets="lightning__AgentforceOutput">
-        <sourceType name="c__caseResult"/>
-    </targetConfig>
-</targetConfigs>
+```xml file=../../examples/force-app/main/default/lwc/caseResultRenderer/caseResultRenderer.js-meta.xml
 ```
 
 The renderer receives the action output through its `value` property.
 
 ### 4. The AgentScript action
 
-```
-actions:
-   submit_case:
-      description: "Submits a support case with structured input and returns case details"
-      inputs:
-         case_data: object
-            description: "Case details including subject, priority, and description"
-            label: "case_data"
-            is_required: True
-            is_user_input: True
-            complex_data_type_name: "c__caseInput"
-      outputs:
-         case_result: object
-            description: "The created case details for display"
-            label: "case_result"
-            complex_data_type_name: "c__caseResult"
-            filter_from_agent: False
-            is_displayable: True
-         case_number: string
-            description: "The case number assigned to the new case"
-      target: "apex://CaseSubmissionService"
+```yaml file=../../examples/agent-script/submit_case.agent
 ```
 
 The property pairs that matter:
@@ -297,12 +201,7 @@ This is the non-obvious part. The phrase **`action's user_input tool`** is
 what tells the platform to render the CLT editor rather than collect the
 fields conversationally:
 
-```
-instructions:->
-   if not @variables.case_submitted:
-      | The user wants to submit a support case.
-        Call {!@actions.submit_case} action's user_input tool to collect the case details from the user.
-        Once the form is submitted, confirm the case was created and share the case number.
+```yaml file=../../examples/agent-script/submit_case_instructions.agent
 ```
 
 Drop that phrasing and you get a working action with default UI — no error,
