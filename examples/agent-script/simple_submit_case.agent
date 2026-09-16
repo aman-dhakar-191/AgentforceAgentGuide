@@ -1,0 +1,17 @@
+actions:
+   submit_case:
+      description: "Submits a support case and returns the new case number. Use when the user reports a problem they want tracked."
+      inputs:
+         subject: string
+            description: "Short summary of the problem"
+            is_required: True
+         priority: string
+            description: "Case priority: Low, Medium, or High"
+         description: string
+            description: "Full detail of the problem"
+      outputs:
+         case_number: string
+            description: "The case number assigned to the new case"
+         status: string
+            description: "The status of the newly created case"
+      target: "apex://SimpleCaseService"

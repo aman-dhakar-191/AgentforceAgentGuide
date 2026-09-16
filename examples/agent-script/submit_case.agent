@@ -1,0 +1,20 @@
+actions:
+   submit_case:
+      description: "Submits a support case with structured input and returns case details"
+      inputs:
+         case_data: object
+            description: "Case details including subject, priority, and description"
+            label: "case_data"
+            is_required: True
+            is_user_input: True
+            complex_data_type_name: "c__caseInput"
+      outputs:
+         case_result: object
+            description: "The created case details for display"
+            label: "case_result"
+            complex_data_type_name: "c__caseResult"
+            filter_from_agent: False
+            is_displayable: True
+         case_number: string
+            description: "The case number assigned to the new case"
+      target: "apex://CaseSubmissionService"

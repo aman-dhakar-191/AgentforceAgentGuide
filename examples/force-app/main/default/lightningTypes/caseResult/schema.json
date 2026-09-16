@@ -1,0 +1,5 @@
+{
+  "title": "Case Result",
+  "description": "The created support case, for display",
+  "lightning:type": "@apexClassType/c__CaseResult"
+}
