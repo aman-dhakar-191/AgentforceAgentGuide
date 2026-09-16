@@ -1,0 +1,5 @@
+{
+  "title": "DemoOrderResultV2",
+  "description": "Demo order details returned by the Get Demo Order action.",
+  "lightning:type": "@apexClassType/c__DemoOrderResult"
+}

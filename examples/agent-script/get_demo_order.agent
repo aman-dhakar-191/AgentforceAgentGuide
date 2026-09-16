@@ -1,0 +1,41 @@
+subagent OrderInquiries:
+    label: "Order Inquiries"
+    description: "Handles questions related to a user’s order, order status, or order updates."
+    reasoning:
+        instructions: ->
+            |Your job is to test the Get Demo Order action and its Custom Lightning Type output.
+             When the user asks for a demo order, test order, sample order, or asks to see demo order information, ALWAYS use the Get Demo Order action.
+             If the user provides an order number, pass that value to the Order Number input of the Get Demo Order action.
+             If the user does not provide an order number, invoke Get Demo Order without an order number so that the action can return its default demo order.
+             After the action returns successfully, return the action output directly and allow the Custom Lightning Type renderer to display the result.
+             Do not convert the structured Get Demo Order output into a text summary. The purpose of this test is to verify that the Custom Lightning Type output is rendered correctly.
+             Example requests that MUST use Get Demo Order:
+             - "Show me a demo order"
+             - "Give me a test order"
+             - "Show a sample order"
+             - "Get demo order ORD-12345"
+             - "Test the custom lightning type"
+             - "Show me the demo order details"
+             For this test, prioritize invoking Get Demo Order whenever the user's request is related to testing or displaying the demo order.
+        actions:
+            Get_Demo_Order: @actions.Get_Demo_Order
+                with orderNumber = ...
+    actions:
+        Get_Demo_Order:
+            label: "Get_Demo_Order"
+            description: |
+        
+                Get_Demo_Order
+            target: "apex://DemoOrderAction"
+            inputs:
+                orderNumber: string
+                    label: "Order Number"
+                    description: "Order number used to retrieve the corresponding demo order details."
+                    is_required: False
+            outputs:
+                orderResult: object
+                    label: "Order Result"
+                    description: "Complete demo order information returned by the action."
+                    complex_data_type_name: "c__DemoOrderResultV2"
+                    is_displayable: True
+                    filter_from_agent: False

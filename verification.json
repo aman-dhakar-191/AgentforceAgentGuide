@@ -5,6 +5,11 @@
     "exempt": true
   },
 
+  "recipes/demo-order-clt": {
+    "verified": false,
+    "notes": "All metadata is now in examples/ and the join key is aligned, but the assembled recipe has not been redeployed and re-run since the folder path, schema and renderer.json were corrected. The renderer.json wrapper form is org-confirmed."
+  },
+
   "actions/apex-actions": {
     "verified": false
   },

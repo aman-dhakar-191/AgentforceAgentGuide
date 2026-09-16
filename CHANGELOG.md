@@ -51,3 +51,27 @@ run against a real org, **Fixed** for corrections.
 ### Added
 - `CONTRIBUTING.md` — the loop for testing samples in an org and recording
   the result.
+
+### Added
+- **Demo Order with a Custom Lightning Type** recipe — the output-only half of
+  CLTs: a `complex_data_type_name` output reaching its renderer, with no input
+  form. Marked unverified until the Apex, Lightning Type Bundle and renderer
+  LWC land alongside the AgentScript.
+
+### Fixed
+- Demo order metadata: corrected a doubled `lightningTypes/lightningTypes/`
+  path, replaced a `schema.json` copied from an unrelated time-slot feature,
+  converted an `editor.json` to `renderer.json` (the type is an output), added
+  the missing `.cls-meta.xml` files, and aligned the join key to
+  `c__DemoOrderResultV2` across the AgentScript, bundle folder and LWC.
+- Added the `orderDetailsRenderer` LWC.
+- Flagged on the Custom Lightning Types page that `renderer.json` has two
+  forms in the wild. The wrapped form is org-confirmed; the unwrapped form in
+  the platform docs is not yet tested.
+- Channels table on the Custom Lightning Types page replaced with the full
+  support matrix: `experienceBuilder` has no renderer support, and
+  property-level overrides exist only there. Also flags that this sits awkwardly
+  with the platform docs' claim that Apex-based types are unsupported in
+  Experience Builder.
+- Documented that `with orderNumber = ...` is literal AgentScript, not an
+  unfinished binding.

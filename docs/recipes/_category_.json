@@ -1,0 +1,8 @@
+{
+  "label": "Recipes",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Complete scenarios, end to end: the AgentScript, the Apex, the metadata, and what actually happened when it ran in an org."
+  }
+}
