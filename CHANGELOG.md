@@ -34,3 +34,8 @@ run against a real org, **Fixed** for corrections.
 ### Not yet verified
 - No page has been run against an org yet. Both action pages carry an
   unverified banner until they have.
+
+### Added (machine-readable output)
+- `/llms.txt`, `/llms-full.txt` and per-page `.md` routes, generated after the
+  Docusaurus build so `file=` code imports are already resolved. Serving the
+  repo's raw Markdown instead would hand readers empty code blocks.
