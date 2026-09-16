@@ -1,0 +1,8 @@
+{
+  "label": "Actions",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "How agents call your code: invocable Apex, Custom Lightning Types, and beyond."
+  }
+}

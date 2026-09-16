@@ -1,12 +1,17 @@
 ---
-verified: false
-verified_on: null
-org_type: null
-api_version: null
-notes: Not yet run against an org. Code samples are derived from official docs and the CustomLightningTypes recipe.
+title: Apex Actions with Custom Lightning Types
+sidebar_label: Apex + Custom Lightning Types
+sidebar_position: 2
 ---
 
 # Apex Actions with Custom Lightning Types
+
+:::info Verification status
+**Not yet verified against an org.** Samples on this page are derived from the
+official Lightning Types documentation and the `CustomLightningTypes` recipe.
+Once run in an org, this banner is replaced with the tested org type and API
+version.
+:::
 
 A plain Apex action gets you default UI: the agent collects inputs
 conversationally and reports outputs as text. **Custom Lightning Types
