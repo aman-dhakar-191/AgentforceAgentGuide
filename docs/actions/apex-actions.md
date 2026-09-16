@@ -6,13 +6,6 @@ sidebar_position: 1
 
 # Actions Backed by Apex
 
-:::info Verification status
-**Not yet verified against an org.** Samples on this page are derived from the
-official Lightning Types documentation and the `CustomLightningTypes` recipe.
-Once run in an org, this banner is replaced with the tested org type and API
-version.
-:::
-
 An Apex action lets an agent call your own server-side logic. You write an
 invocable Apex method, point an AgentScript action at it with an
 `apex://` target, and the platform handles turning the agent's reasoning

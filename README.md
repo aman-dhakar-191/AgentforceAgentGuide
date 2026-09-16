@@ -56,6 +56,12 @@ examples/              SFDX project — the source of every code sample
   build-check.yml      builds on PRs; catches broken links and dead imports
 ```
 
+## Contributing
+
+[CONTRIBUTING.md](CONTRIBUTING.md) is the working loop: where code goes, how
+to test an agent in an org, and how to record the result in
+`verification.json`.
+
 ## Local development
 
 ```bash
