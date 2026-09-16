@@ -1,0 +1,15 @@
+{
+  "_comment": "Verification status per doc id (path under docs/, without .md). Any page NOT listed here renders as unverified - that default is deliberate, so a new page can never silently look tested. Set exempt:true for pages with no code to test.",
+
+  "intro": {
+    "exempt": true
+  },
+
+  "actions/apex-actions": {
+    "verified": false
+  },
+
+  "actions/apex-with-custom-lightning-types": {
+    "verified": false
+  }
+}

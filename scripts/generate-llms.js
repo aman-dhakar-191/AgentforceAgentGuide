@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
+const REGISTRY = require(path.join(ROOT, 'verification.json'));
 const DOCS = path.join(ROOT, 'docs');
 const OUT = path.join(ROOT, 'build');
 const SITE = 'https://aman-dhakar-191.github.io/AgentforceAgentGuide';
@@ -63,6 +64,31 @@ function flattenAdmonitions(body) {
   );
 }
 
+/**
+ * The banner lives in verification.json and is rendered by a theme wrapper,
+ * not in the markdown, so it has to be re-attached here or the text output
+ * would drop the tested/untested signal entirely.
+ */
+function verificationLine(docId) {
+  const entry = REGISTRY[docId] ?? {};
+  if (entry.exempt) return null;
+  if (!entry.verified) {
+    return 'VERIFICATION: Not verified against a live org. Samples are ' +
+      'derived from official documentation and should be treated as a ' +
+      'starting point rather than tested code.';
+  }
+  const bits = [
+    entry.org && `${entry.org} org`,
+    entry.apiVersion && `API version ${entry.apiVersion}`,
+    entry.date && `last checked ${entry.date}`,
+  ].filter(Boolean);
+  return `VERIFICATION: Deployed and run${bits.length ? ' in ' + bits.join(', ') : ''}.`;
+}
+
+function docIdFor(mdPath) {
+  return path.relative(DOCS, mdPath).replace(/\.md$/, '').split(path.sep).join('/');
+}
+
 function routeFor(mdPath) {
   const rel = path.relative(DOCS, mdPath).replace(/\.md$/, '');
   return rel === 'intro' ? '' : `/${rel.split(path.sep).join('/')}`;
@@ -72,9 +98,17 @@ const pages = walk(DOCS)
   .map((mdPath) => {
     const raw = fs.readFileSync(mdPath, 'utf8');
     const { data, body } = parseFrontMatter(raw);
-    const content = flattenAdmonitions(resolveImports(body, mdPath)).trim();
+    // Drop the body's own H1; each output format supplies its own heading.
+    // Drop the body's own H1; each output format supplies its own heading.
+    // Trim first, or the leading newline after the front matter defeats ^.
+    const content = flattenAdmonitions(resolveImports(body, mdPath))
+      .trim()
+      .replace(/^#\s+.*\n+/, '')
+      .trim();
+    const verification = verificationLine(docIdFor(mdPath));
     return {
       title: data.title || path.basename(mdPath, '.md'),
+      verification,
       position: Number(data.sidebar_position ?? 99),
       route: routeFor(mdPath),
       content,
@@ -88,7 +122,8 @@ fs.mkdirSync(OUT, { recursive: true });
 for (const p of pages) {
   const dest = path.join(OUT, `${p.route || '/index'}.md`);
   fs.mkdirSync(path.dirname(dest), { recursive: true });
-  fs.writeFileSync(dest, `# ${p.title}\n\n${p.content}\n`);
+  const head = p.verification ? `> ${p.verification}\n\n` : '';
+  fs.writeFileSync(dest, `# ${p.title}\n\n${head}${p.content}\n`);
 }
 
 const index = [
@@ -119,6 +154,7 @@ const full = [
     '='.repeat(72),
     `# ${p.title}`,
     `Source: ${SITE}${p.route || '/'}`,
+    ...(p.verification ? [p.verification] : []),
     '='.repeat(72),
     '',
     p.content,

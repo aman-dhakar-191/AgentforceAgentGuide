@@ -39,3 +39,15 @@ run against a real org, **Fixed** for corrections.
 - `/llms.txt`, `/llms-full.txt` and per-page `.md` routes, generated after the
   Docusaurus build so `file=` code imports are already resolved. Serving the
   repo's raw Markdown instead would hand readers empty code blocks.
+
+### Changed (verification)
+- Verification status moved out of per-page Markdown into a central
+  `verification.json`, rendered by a theme wrapper on every doc. A page not
+  listed there renders as unverified, so a new page can never silently look
+  tested.
+- The same registry feeds `llms.txt` and the per-page Markdown, so machine
+  readers get the tested/untested signal too.
+
+### Added
+- `CONTRIBUTING.md` — the loop for testing samples in an org and recording
+  the result.
