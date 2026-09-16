@@ -1,0 +1,35 @@
+<template>
+    <article class="slds-card slds-card_boundary">
+        <div class="slds-card__header slds-p-around_small">
+            <h2 class="slds-text-heading_small">Case Submitted Successfully</h2>
+        </div>
+
+        <div class="slds-card__body slds-p-horizontal_small">
+            <p class="slds-m-bottom_x-small">
+                Your case has been created with number:
+                <strong>{caseNumber}</strong>
+            </p>
+
+            <dl class="slds-dl_horizontal">
+                <dt class="slds-dl_horizontal__label">Subject</dt>
+                <dd class="slds-dl_horizontal__detail">{subject}</dd>
+
+                <dt class="slds-dl_horizontal__label">Priority</dt>
+                <dd class="slds-dl_horizontal__detail">
+                    <lightning-badge label={priority} variant={priorityVariant}></lightning-badge>
+                </dd>
+
+                <dt class="slds-dl_horizontal__label">Status</dt>
+                <dd class="slds-dl_horizontal__detail">{status}</dd>
+
+                <dt class="slds-dl_horizontal__label">Created</dt>
+                <dd class="slds-dl_horizontal__detail">
+                    <lightning-formatted-date-time value={createdDate}></lightning-formatted-date-time>
+                </dd>
+
+                <dt class="slds-dl_horizontal__label">Estimated Response</dt>
+                <dd class="slds-dl_horizontal__detail">{estimatedResponse}</dd>
+            </dl>
+        </div>
+    </article>
+</template>

@@ -1,0 +1,24 @@
+name: Build check
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # Catches broken links and, importantly, code-import paths that point
+      # at files that were moved or deleted in examples/.
+      - run: npm run build

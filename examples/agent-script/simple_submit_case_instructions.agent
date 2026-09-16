@@ -1,0 +1,4 @@
+instructions:->
+   | The user wants to report a problem.
+     Gather the subject, priority, and description conversationally,
+     then call {!@actions.submit_case} and tell the user their case number.

@@ -1,0 +1,11 @@
+node_modules/
+build/
+.docusaurus/
+.cache-loader/
+npm-debug.log*
+yarn-error.log*
+
+# SFDX
+examples/.sfdx/
+examples/.sf/
+examples/.localdevserver/

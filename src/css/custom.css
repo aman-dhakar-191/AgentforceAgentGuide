@@ -1,0 +1,25 @@
+:root {
+  --ifm-color-primary: #0176d3;
+  --ifm-color-primary-dark: #016abe;
+  --ifm-color-primary-darker: #0164b4;
+  --ifm-color-primary-darkest: #015394;
+  --ifm-color-primary-light: #0a83e8;
+  --ifm-color-primary-lighter: #1489ec;
+  --ifm-color-primary-lightest: #349aef;
+  --ifm-code-font-size: 93%;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #4bb3fd;
+  --ifm-color-primary-dark: #2aa5fc;
+  --ifm-color-primary-darker: #199efc;
+  --ifm-color-primary-darkest: #0484dd;
+  --ifm-color-primary-light: #6cc1fe;
+  --ifm-color-primary-lighter: #7dc8fe;
+  --ifm-color-primary-lightest: #b0ddfe;
+}
+
+/* The wiring-chain ASCII diagrams need to survive narrow viewports. */
+pre code {
+  white-space: pre;
+}
