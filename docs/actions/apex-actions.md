@@ -1,12 +1,17 @@
 ---
-verified: false
-verified_on: null
-org_type: null
-api_version: null
-notes: Not yet run against an org. Code samples are derived from official docs and the CustomLightningTypes recipe.
+title: Actions Backed by Apex
+sidebar_label: Apex Actions
+sidebar_position: 1
 ---
 
 # Actions Backed by Apex
+
+:::info Verification status
+**Not yet verified against an org.** Samples on this page are derived from the
+official Lightning Types documentation and the `CustomLightningTypes` recipe.
+Once run in an org, this banner is replaced with the tested org type and API
+version.
+:::
 
 An Apex action lets an agent call your own server-side logic. You write an
 invocable Apex method, point an AgentScript action at it with an
