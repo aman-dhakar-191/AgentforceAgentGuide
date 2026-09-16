@@ -68,3 +68,10 @@ run against a real org, **Fixed** for corrections.
 - Flagged on the Custom Lightning Types page that `renderer.json` has two
   forms in the wild. The wrapped form is org-confirmed; the unwrapped form in
   the platform docs is not yet tested.
+- Channels table on the Custom Lightning Types page replaced with the full
+  support matrix: `experienceBuilder` has no renderer support, and
+  property-level overrides exist only there. Also flags that this sits awkwardly
+  with the platform docs' claim that Apex-based types are unsupported in
+  Experience Builder.
+- Documented that `with orderNumber = ...` is literal AgentScript, not an
+  unfinished binding.

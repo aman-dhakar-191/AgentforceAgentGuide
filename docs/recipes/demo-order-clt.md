@@ -55,6 +55,15 @@ together, and the card silently fails to render if any is missing:
 | `is_displayable: True` | Hands the value to the display layer. Without it the value is data only. |
 | `filter_from_agent: False` | Keeps the data in the agent's context as well, so it can also talk about the order. Set `True` to show the card but hide the values from the model. |
 
+**`with orderNumber = ...` is literal syntax, not a placeholder.** The `...`
+is real AgentScript: it hands the binding to the agent, which supplies the
+value from the conversation rather than from a fixed expression or variable.
+It reads like an unfinished line and is not — leave it alone.
+
+Because the input is optional, this pairs with the instruction telling the
+agent to invoke the action with no order number when the user did not give
+one, so the action returns its default demo order.
+
 **There is no input CLT here.** The `orderNumber` input is a plain string with
 no `is_user_input` and no `complex_data_type_name`, so it is collected
 conversationally. That is what makes this a smaller test than the full

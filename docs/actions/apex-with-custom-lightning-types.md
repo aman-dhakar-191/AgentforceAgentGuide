@@ -158,21 +158,40 @@ corrected once both channels are tested.
 :::
 
 Map individual schema properties onto LWC properties with
-`{!$attrs.PropertyName}` when you need finer control than a top-level
-override.
+`{!$attrs.PropertyName}`. Note the channel limits below: property-level
+overrides are only available in `experienceBuilder`, so in the agent channels
+a top-level override handling the whole type is the only option.
 
 #### Channels
 
-The channel subfolder decides where the override applies. Pick the folders
-matching the surfaces you support:
+The channel subfolder decides where the override applies, and each channel
+supports a different subset. These four are the supported channels:
 
-| Folder | Surface |
-| --- | --- |
-| `lightningDesktopGenAi` | Agentforce Employee agent in Lightning Experience |
-| `enhancedWebChat` | Agentforce Service agent via Enhanced Chat v2 |
-| `lightningMobileGenAi` | Employee agent on mobile; Service agent via Enhanced Chat v2 on mobile |
+| Channel | Surface | Editor | Renderer | Top-level override | Property-level override |
+| --- | --- | :-: | :-: | :-: | :-: |
+| `lightningDesktopGenAi` | Employee agent in Lightning Experience | Yes | Yes | Yes | No |
+| `lightningMobileGenAi` | Employee agent on mobile; Service agent via Enhanced Chat v2 on mobile | Yes | Yes | Yes | No |
+| `enhancedWebChat` | Service agent via Enhanced Chat v2 | Yes | Yes | Yes | No |
+| `experienceBuilder` | Experience Builder sites | Yes | **No** | Yes | **Yes** |
 
-Apex-based types are **not supported in Experience Builder sites**.
+Two consequences worth planning around:
+
+**`experienceBuilder` has no renderer support.** You can override the input
+form there, but not the output display — an action result falls back to the
+default rendering. If a custom result card is the point, that channel cannot
+deliver it.
+
+**Property-level overrides only exist in `experienceBuilder`.** In the three
+agent channels the only available override is top-level: one component
+handling the whole type, keyed by `$`. You cannot swap the component for a
+single property and leave the rest default.
+
+Separately, the platform documentation states that **Apex-based** types are
+not supported in Experience Builder sites. Read alongside the table above,
+that most likely means Experience Builder supports editor overrides for
+Lightning types generally, but not for types whose schema projects from an
+Apex class. Untested here — if you need Apex-based types in Experience
+Builder, verify it before designing around it.
 
 ### 3. The LWC components
 
