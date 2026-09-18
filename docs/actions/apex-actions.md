@@ -95,11 +95,41 @@ can be echoed back to the user verbatim.
 Action inputs and outputs map to Apex types. Stick to:
 
 - Primitives — `String`, `Integer`, `Double`, `Long`, `Boolean`, `Date`,
-  `Datetime`, `Time`, `ID`
+  `Datetime`, `Time`
 - sObjects — generic or specific (`Account`, `MyObject__c`)
 - Collections — `List`/array of the above, and `Map<String, ...>` where the
   key is always a `String`
 - User-defined Apex classes, for structured `object` inputs and outputs
+
+### Record IDs are not strings
+
+A Salesforce record Id is the one case where the obvious typing is wrong.
+Declare it as `object` with the built-in record Id type, not as `string` or
+`id`:
+
+```yaml
+inputs:
+   rawDataId: object
+      label: "Raw Data Record Id"
+      description: "The Id of the Google_Drive_Raw_Data__c record to process"
+      complex_data_type_name: "lightning__recordIdType"
+      is_required: True
+outputs:
+   leadId: object
+      label: "Lead Id"
+      complex_data_type_name: "lightning__recordIdType"
+```
+
+The same applies to Ids on the way out, as `leadId` shows above.
+
+**Note the `lightning__` prefix.** Custom Lightning Types you author are
+namespaced `c__` and need a Lightning Type Bundle in your org.
+`lightning__recordIdType` is a platform-provided type — there is no bundle to
+create and nothing to deploy, you just name it.
+
+Typing an Id as a plain `string` will often appear to work in testing while
+costing you the platform's Id handling downstream. Type it properly from the
+start.
 
 ## Security and governor limits
 
