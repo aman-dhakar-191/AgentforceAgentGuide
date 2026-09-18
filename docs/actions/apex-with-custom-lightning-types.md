@@ -44,6 +44,17 @@ names the Lightning Type Bundle folder, and it appears again in the LWC's
 `js-meta.xml`. A typo in any of the three gets you the default UI with no
 error.
 
+:::note Not every `complex_data_type_name` is a custom type
+The platform ships its own Lightning types, namespaced `lightning__` instead
+of `c__`. The common one is `lightning__recordIdType`, which is how a
+Salesforce record Id should be typed — see
+[Record IDs are not strings](./apex-actions.md#record-ids-are-not-strings).
+
+Built-in types need no bundle, no LWC and no deploy: you name the type and
+the platform supplies the handling. Everything below is about the `c__` case,
+where you author all three layers yourself.
+:::
+
 **Input** flows through `editor.json` → an LWC targeting
 `lightning__AgentforceInput`, matched by `targetType`.
 **Output** flows through `renderer.json` → an LWC targeting

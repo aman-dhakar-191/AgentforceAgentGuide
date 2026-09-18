@@ -85,3 +85,11 @@ run against a real org, **Fixed** for corrections.
 - `verification.json` was missing a comma, which broke the site build. Added
   `scripts/check-verification.js`, run as `prebuild`, so a malformed registry
   fails with the offending line rather than a webpack module-parse error.
+
+### Fixed
+- Removed `ID` from the primitives list on the Apex Actions page. A Salesforce
+  record Id must be typed as `object` with
+  `complex_data_type_name: "lightning__recordIdType"`, not as a string or id
+  primitive. Added a section covering it for both inputs and outputs, and a
+  note on the Custom Lightning Types page that `lightning__` types are
+  platform-provided and need no bundle, LWC or deploy.
